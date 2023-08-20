@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  base: &base
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        RUBY_VERSION: '3.1.1'
+    stdin_open: true
+    tty: true
+    volumes:
+      - .:/app
+      - bundle:/usr/local/bundle
+      - node_modules:/app/node_modules
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@host.docker.internal:6432
+    depends_on:
+      - redis
+      - postgres
+
+  app:
+    <<: *base
+    command: bash -c "bundle install && bin/rails server -p 4000 -b 0.0.0.0"
+    container_name: no_show_gala_taco
+    ports:
+      - '4000:4000'
+      - '6900:6900'
+      - '6901:6901'
+    tty: true
+    stdin_open: true
+
+  css:
+    <<: *base
+    command: bin/rails tailwindcss:watch
+
+  js:
+    <<: *base
+    #command: yarn build --watch
+
+  # sidekiq:
+  #   <<: *base
+  #   volumes:
+  #     - .:/app
+  #   depends_on:
+  #     - redis
+    #command: bash -c "bundle install && bundle exec sidekiq"
+
+  redis:
+    restart: always
+    image: redis
+    ports:
+      - 7379:6379
+
+  postgres:
+    image: postgres:14
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '6432:5432'
+
+volumes:
+  bundle:
+  node_modules:
+  postgres:
