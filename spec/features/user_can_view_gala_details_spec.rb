@@ -6,7 +6,7 @@ RSpec.describe "User can view gala details" do
       visit root_path
 
       expect(page).to have_content("the 6th Annual No Show Gala")
-      expect(page).to have_button("R.S.V.P.")
+      expect(page).to have_link("R.S.V.P.")
     end
   end
 end
