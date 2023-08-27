@@ -21,7 +21,7 @@ services:
 
   app:
     <<: *base
-    command: bash -c "bundle install && rails assets:precompile && bin/rails server -p 4000 -b 0.0.0.0"
+    command: bash -c "bundle install && bin/rails server -p 4000 -b 0.0.0.0"
     container_name: no_show_gala_taco
     ports:
       - '4000:4000'
