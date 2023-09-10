@@ -1,4 +1,4 @@
-ARG RUBY_VERSION
+ARG RUBY_VERSION=3.1.1
 FROM ruby:$RUBY_VERSION
 
 RUN curl -fsSL https://deb.nodesource.com/setup_19.x | bash - \
