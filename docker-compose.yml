@@ -13,8 +13,6 @@ services:
       - .:/app
       - bundle:/usr/local/bundle
       - node_modules:/app/node_modules
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@host.docker.internal:6432
     depends_on:
       - redis
       - postgres
