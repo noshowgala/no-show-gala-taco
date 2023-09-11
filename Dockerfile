@@ -8,6 +8,8 @@ RUN gem install rails bundler
 
 WORKDIR /app
 
+RUN mkdir -p tmp/pids
+
 COPY Gemfile Gemfile.lock ./
 
 RUN bundle install
