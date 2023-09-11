@@ -13,3 +13,5 @@ COPY Gemfile Gemfile.lock ./
 RUN bundle install
 
 COPY . .
+
+CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
