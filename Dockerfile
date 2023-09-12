@@ -10,10 +10,11 @@ WORKDIR /app
 
 RUN mkdir -p tmp/pids
 
-COPY Gemfile Gemfile.lock ./
+COPY Gemfile /app/Gemfile
+COPY Gemfile.lock /app/Gemfile.lock
 
 RUN bundle install
 
-COPY . .
+COPY . /app
 
 CMD bundle exec puma -C config/puma.rb
