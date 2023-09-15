@@ -9,4 +9,15 @@ RSpec.describe "User can view gala details" do
       expect(page).to have_link("R.S.V.P.")
     end
   end
+
+  context "when clicking on the R.S.V.P. button" do
+    it "shows information about the products on offer" do
+      visit root_path
+      click_on "R.S.V.P."
+
+      expect(page).to have_content("the 6th Annual No Show Gala")
+      expect(page).to have_content("NO cocktail")
+      expect(page).to have_content("$25")
+    end
+  end
 end

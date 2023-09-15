@@ -1,0 +1,13 @@
+<p class="text-gold-100 text-xl"><span class="font-bold">TACO</span> presents</p>
+<h1 class="mt-2 text-6xl">the 6th Annual <span class="font-cursive text-7xl text-gold-400">No Show Gala</span></h1>
+
+<div class="pr-48 font-light">
+  <p class="text-xl mt-8">Join us for a night of not attending while supporting San Diego’s award-winning non-profit organization.</p>
+</div>
+
+<% @products.each do |product| %>
+  <div>
+    <%= "NO #{product.name.downcase}" %>
+    <%= "$#{product.price}" %>
+  </div>
+<% end %>
