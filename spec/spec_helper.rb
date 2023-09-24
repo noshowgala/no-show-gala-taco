@@ -16,6 +16,8 @@
 
 require 'capybara/rspec'
 
+Capybara.server = :puma, { Silent: true }
+
 Capybara.register_driver :selenium_chrome_headless do |app|
   options = Selenium::WebDriver::Chrome::Options.new
 

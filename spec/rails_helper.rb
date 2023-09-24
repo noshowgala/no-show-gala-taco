@@ -29,6 +29,15 @@ begin
 rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
+
+Capybara.register_driver :selenium_firefox do |app|
+  browser_options = ::Selenium::WebDriver::Firefox::Options.new()
+  browser_options.args << '--headless'
+  Capybara::Selenium::Driver.new(app, browser: :firefox, options: browser_options)
+end
+
+Capybara.default_driver = :selenium_firefox
+
 RSpec.configure do |config|
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"

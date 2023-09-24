@@ -6,8 +6,42 @@
 </div>
 
 <% @products.each do |product| %>
-  <div>
+  <div data-product-id="<%= product.id %>">
     <%= "NO #{product.name.downcase}" %>
     <%= "$#{product.price}" %>
+    <%= button_tag "Add", class: "add-button", onclick: "addToCart(this)" %>
+    <%= button_tag "Added", class: "added-button hidden", onclick: "removeFromCart(this)" %>
   </div>
 <% end %>
+
+<%= button_tag "CHECKOUT (0)", id: "checkout-button" %>
+
+<script>
+  function addToCart(buttonElement) {
+    // Hide the clicked "Add" button
+    buttonElement.classList.add("hidden");
+
+    // Show the corresponding "Added" button
+    const addedButton = buttonElement.nextElementSibling;
+    addedButton.classList.remove('hidden');
+
+    // Increment the count on the "Checkout" button
+    const checkoutButton = document.getElementById('checkout-button');
+    const currentCount = parseInt(checkoutButton.textContent.match(/\d+/)[0]);
+    checkoutButton.textContent = `CHECKOUT (${currentCount + 1})`;
+  }
+
+  function removeFromCart(buttonElement) {
+    // Hide the clicked "Added" button
+    buttonElement.classList.add('hidden');
+
+    // Show the corresponding "Add" button
+    const addButton = buttonElement.previousElementSibling;
+    addButton.classList.remove("hidden")
+
+    // Decrement the count on the "Checkout" button
+    const checkoutButton = document.getElementById('checkout-button');
+    const currentCount = parseInt(checkoutButton.textContent.match(/\d+/)[0]);
+    checkoutButton.textContent = `CHECKOUT (${currentCount - 1})`;
+  }
+</script>

@@ -6,11 +6,11 @@ RSpec.describe "User can add product to cart" do
       visit products_path
 
       expect(page).not_to have_content("Added")
-      expect(page).not_to have_content("CHECKOUT (")
+      expect(page).to have_content("CHECKOUT (0)")
     end
   end
 
-  context "when clicking on the 'Add' button", js: true do
+  context "when clicking on the 'Add' button", driver: :selenium_headless, js: true do
     it "adds the item to the cart" do
       visit products_path
       cocktail = Product.find_by(name: 'Cocktail')
