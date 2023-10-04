@@ -1,24 +1,18 @@
-# README
+## Setting up the app
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+The following environment variables need to be set up:
 
-* Ruby version
+```
+* STRIPE_SECRET_KEY
+* STRIPE_PUBLISHABLE_KEY
+```
 
-* System dependencies
+Set up a file called `.env` that looks like this:
 
-* Configuration
+```
+STRIPE_SECRET_KEY="<Stripe Test Secret Key from Stripe Dashboard in Test mode>"
+STRIPE_PUBLISHABLE_KEY="<Stripe Test Publishable Key from Stripe Dashboard in Test mode>"
+```
 
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+Run `rake db:seed` in the relevant environments to load in the products.

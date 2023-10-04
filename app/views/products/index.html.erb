@@ -21,40 +21,105 @@
           </div>
         </div>
       </div>
-      <%= button_tag "Add", class: "add-button w-full p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this)" %>
-      <%= button_tag "Added ✅", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this)" %>
+      <%= button_tag "Add", class: "add-button w-full p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
+      <%= button_tag "Added ✅", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this, #{product.id})" %>
     </div>
   <% end %>
 </div>
 
 
 <%= button_tag "CHECKOUT (0)", id: "checkout-button", class: "w-full bg-green-700 text-white mt-8 mb-16 py-6 text-bold rounded" %>
+
 <script>
-  function addToCart(buttonElement) {
-    // Hide the clicked "Add" button
-    buttonElement.classList.add("hidden");
+  function addToCart(buttonElement, productId) {
+    fetch(`/donations/add_product?product_id=${productId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+      }
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        // Hide the clicked "Add" button
+        buttonElement.classList.add("hidden");
 
-    // Show the corresponding "Added" button
-    const addedButton = buttonElement.nextElementSibling;
-    addedButton.classList.remove('hidden');
+        // Show the corresponding "Added" button
+        const addedButton = buttonElement.nextElementSibling;
+        addedButton.classList.remove('hidden');
 
-    // Increment the count on the "Checkout" button
-    const checkoutButton = document.getElementById('checkout-button');
-    const currentCount = parseInt(checkoutButton.textContent.match(/\d+/)[0]);
-    checkoutButton.textContent = `CHECKOUT (${currentCount + 1})`;
+        // Increment the count on the "Checkout" button
+        const checkoutButton = document.getElementById('checkout-button');
+        checkoutButton.textContent = `CHECKOUT (${result.donation_count})`;
+      } else {
+        console.error(result.error);
+      }
+    })
+    .catch(error => console.error('Fetch Error:', error));
   }
 
-  function removeFromCart(buttonElement) {
-    // Hide the clicked "Added" button
-    buttonElement.classList.add('hidden');
+  function removeFromCart(buttonElement, productId) {
+    fetch(`/donations/remove_product?product_id=${productId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
+      }
+    })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        // Hide the clicked "Added" button
+        buttonElement.classList.add('hidden');
 
-    // Show the corresponding "Add" button
-    const addButton = buttonElement.previousElementSibling;
-    addButton.classList.remove("hidden")
+        // Show the corresponding "Add" button
+        const addButton = buttonElement.previousElementSibling;
+        addButton.classList.remove("hidden")
 
-    // Decrement the count on the "Checkout" button
-    const checkoutButton = document.getElementById('checkout-button');
-    const currentCount = parseInt(checkoutButton.textContent.match(/\d+/)[0]);
-    checkoutButton.textContent = `CHECKOUT (${currentCount - 1})`;
+        // Decrement the count on the "Checkout" button
+        const checkoutButton = document.getElementById('checkout-button');
+        checkoutButton.textContent = `CHECKOUT (${result.donation_count})`;
+      } else {
+        console.error(result.error);
+      }
+    })
+    .catch(error => console.error('Fetch Error:', error));
   }
+
+  const stripe = Stripe('<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>');
+
+  function handleCheckout() {
+    const checkoutButton = document.getElementById('checkout-button');
+    item_count = checkoutButton.innerText.match(/\d+/)[0];
+    checkoutButton.disabled = true;
+    checkoutButton.innerText = "PLEASE WAIT...";
+
+    fetch('/donations/checkout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+    })
+      .then(response => response.json())
+      .then(session => {
+        return stripe.redirectToCheckout({ sessionId: session.id });
+      })
+      .then(result => {
+        if (result && result.error) {
+          alert(result.error.message);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      })
+      .finally(() => {
+        // Re-enable the button and restore text in either case (success or error)
+        checkoutButton.disabled = false;
+        checkoutButton.innerText = `CHECKOUT (${item_count})`;
+      });
+  }
+
+  document.getElementById('checkout-button').addEventListener('click', handleCheckout);
 </script>

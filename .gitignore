@@ -43,4 +43,6 @@
 
 .DS_STORE
 
+.env
+
 /config/credentials/production.key
