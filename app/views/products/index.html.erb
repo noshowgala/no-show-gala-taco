@@ -1,21 +1,34 @@
-<p class="text-gold-100 text-xl"><span class="font-bold">TACO</span> presents</p>
+<p class="text-gold-100 text-xl pt-16"><span class="font-bold">TACO</span> presents</p>
 <h1 class="mt-2 text-6xl">the 6th Annual <span class="font-cursive text-7xl text-gold-400">No Show Gala</span></h1>
 
-<div class="pr-48 font-light">
-  <p class="text-xl mt-8">Join us for a night of not attending while supporting San Diego’s award-winning non-profit organization.</p>
+<div class="lg:pr-48 font-light">
+  <p class="text-xl mt-8 mb-8">Join us for a night of not attending while supporting San Diego’s award-winning non-profit organization.</p>
 </div>
 
-<% @products.each do |product| %>
-  <div data-product-id="<%= product.id %>">
-    <%= "NO #{product.name.downcase}" %>
-    <%= "$#{product.price}" %>
-    <%= button_tag "Add", class: "add-button", onclick: "addToCart(this)" %>
-    <%= button_tag "Added", class: "added-button hidden", onclick: "removeFromCart(this)" %>
-  </div>
-<% end %>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-2 lg:gap-8">
+  <% @products.each do |product| %>
+    <div data-product-id="<%= product.id %>" class="item rounded-lg relative">
+      <div class="p-8 bg-white rounded-t-lg">
+        <div class="flex flex-col items-center justify-center">
+          <div class="w-16 h-16 flex items-center justify-center">
+            <span><%= image_tag product.image %></span>
+          </div>
+          <div class="mt-2 text-center text-black">
+            <%= "NO #{product.name.downcase}" %>
+          </div>
+          <div class="absolute top-4 right-4 text-black">
+            <span><%= "$#{product.price}" %></span>
+          </div>
+        </div>
+      </div>
+      <%= button_tag "Add", class: "add-button w-full p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this)" %>
+      <%= button_tag "Added ✅", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this)" %>
+    </div>
+  <% end %>
+</div>
 
-<%= button_tag "CHECKOUT (0)", id: "checkout-button" %>
 
+<%= button_tag "CHECKOUT (0)", id: "checkout-button", class: "w-full bg-green-700 text-white mt-8 mb-16 py-6 text-bold rounded" %>
 <script>
   function addToCart(buttonElement) {
     // Hide the clicked "Add" button

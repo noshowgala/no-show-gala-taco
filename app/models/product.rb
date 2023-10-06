@@ -1,3 +1,6 @@
 class Product < ApplicationRecord
-end
 
+  def image
+    name.gsub(/\s+/, '_').downcase
+  end
+end
