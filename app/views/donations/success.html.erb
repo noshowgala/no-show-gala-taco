@@ -1,6 +1,22 @@
-<p class="text-gold-100 text-xl"><span class="font-bold">TACO</span> presents</p>
+<p class="text-gold-100 text-xl lg:pt-48 pt-16"><span class="font-bold">TACO</span> presents</p>
 <h1 class="mt-2 text-6xl">the 6th Annual <span class="font-cursive text-7xl text-gold-400">No Show Gala</span></h1>
 
-<div class="pr-48 font-light">
+<div class="lg:pr-48 font-light">
   <p class="text-xl mt-8">Thank you for not joining us!</p>
+  <p class="text-xl mt-8 mb-8">
+    Galas are more fun when you don't attend together. Share with a friend.
+  </p>
+  <%= button_tag "Copy R.S.V.P. Link", class: "font-bold p-4 rounded-lg bg-green-700", onclick: "copyLinkToClipboard()" %>
 </div>
+
+<script to clipboar>
+  function copyLinkToClipboard() {
+    const link = "http://noshowgala.org";
+
+    navigator.clipboard.writeText(link).then(function() {
+      alert('Copied to clipboard!');
+    }).catch(function(err) {
+      console.error('Could not copy text: ', err);
+    })
+  }
+</script>
