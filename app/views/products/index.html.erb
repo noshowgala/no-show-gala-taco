@@ -5,11 +5,11 @@
   <p class="text-xl mt-8 mb-8">Join us for a night of not attending while supporting San Diego’s award-winning non-profit organization.</p>
 </div>
 
-<div class="grid grid-cols-2 md:grid-cols-3 gap-2 lg:gap-8">
+<div class="grid grid-cols-2 md:grid-cols-3 gap-2 lg:gap-8 items-stretch grid-rows-1">
   <% @products.each do |product| %>
-    <div data-product-id="<%= product.id %>" class="item rounded-lg relative">
-      <div class="p-8 bg-white rounded-t-lg">
-        <div class="flex flex-col items-center justify-center">
+    <div data-product-id="<%= product.id %>" class="item rounded-lg relative h-full flex flex-col">
+      <div class="p-8 bg-white rounded-t-lg flex-grow">
+        <div class="flex flex-col items-center justify-center h-full">
           <div class="w-16 h-16 flex items-center justify-center">
             <span><%= image_tag "#{product.image}.png" %></span>
           </div>
@@ -21,8 +21,10 @@
           </div>
         </div>
       </div>
-      <%= button_tag "Add", class: "add-button w-full p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
-      <%= button_tag "Added ✅", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this, #{product.id})" %>
+      <div class="w-full">
+        <%= button_tag "Add", class: "add-button w-full p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
+        <%= button_tag "Added ✅", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this, #{product.id})" %>
+      </div>
     </div>
   <% end %>
 </div>
