@@ -9,14 +9,14 @@
   <%= button_tag "Copy R.S.V.P. Link", class: "font-bold p-4 rounded-lg bg-green-700", onclick: "copyLinkToClipboard()" %>
 </div>
 
-<script to clipboar>
+<script>
   function copyLinkToClipboard() {
-    const link = "http://noshowgala.org";
+    const link = "https://noshowgala.org";
 
     navigator.clipboard.writeText(link).then(function() {
       alert('Copied to clipboard!');
-    }).catch(function(err) {
-      console.error('Could not copy text: ', err);
+    }).catch(function(error) {
+      console.error('Could not copy text: ', error);
     })
   }
 </script>
