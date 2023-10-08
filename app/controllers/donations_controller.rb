@@ -38,7 +38,7 @@ class DonationsController < ApplicationController
         price_data: {
           currency: 'usd',
           product_data: {
-            name: 'Donation',
+            name: 'No Show Gala',
             description: 'Thank you for NOT attending our gala!'
           },
           unit_amount: total_amount,
