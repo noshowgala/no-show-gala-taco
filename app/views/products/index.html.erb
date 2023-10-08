@@ -1,5 +1,7 @@
-<p class="text-gold-100 text-xl pt-16"><span class="font-bold">TACO</span> presents</p>
-<h1 class="mt-2 text-6xl">the 6th Annual <span class="font-cursive text-7xl text-gold-400">No Show Gala</span></h1>
+<%= link_to root_path do %>
+  <p class="text-gold-100 text-xl pt-16"><span class="font-bold">TACO</span> presents</p>
+  <h1 class="mt-2 text-6xl">the 6th Annual <span class="font-cursive text-7xl text-gold-400">No Show Gala</span></h1>
+<% end %>
 
 <div class="lg:pr-48 font-light">
   <p class="text-xl mt-8 mb-8">Join us for a night of not attending while supporting San Diego’s award-winning non-profit organization.</p>
@@ -41,24 +43,24 @@
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
       }
     })
-    .then(response => response.json())
-    .then(result => {
-      if (result.success) {
-        // Hide the clicked "Add" button
-        buttonElement.classList.add("hidden");
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          // Hide the clicked "Add" button
+          buttonElement.classList.add("hidden");
 
-        // Show the corresponding "Added" button
-        const addedButton = buttonElement.nextElementSibling;
-        addedButton.classList.remove('hidden');
+          // Show the corresponding "Added" button
+          const addedButton = buttonElement.nextElementSibling;
+          addedButton.classList.remove('hidden');
 
-        // Increment the count on the "Checkout" button
-        const checkoutButton = document.getElementById('checkout-button');
-        checkoutButton.textContent = `CHECKOUT (${result.donation_count})`;
-      } else {
-        console.error(result.error);
-      }
-    })
-    .catch(error => console.error('Fetch Error:', error));
+          // Increment the count on the "Checkout" button
+          const checkoutButton = document.getElementById('checkout-button');
+          checkoutButton.textContent = `CHECKOUT (${result.donation_count})`;
+        } else {
+          console.error(result.error);
+        }
+      })
+      .catch(error => console.error('Fetch Error:', error));
   }
 
   function removeFromCart(buttonElement, productId) {
@@ -69,24 +71,24 @@
         'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content,
       }
     })
-    .then(response => response.json())
-    .then(result => {
-      if (result.success) {
-        // Hide the clicked "Added" button
-        buttonElement.classList.add('hidden');
+      .then(response => response.json())
+      .then(result => {
+        if (result.success) {
+          // Hide the clicked "Added" button
+          buttonElement.classList.add('hidden');
 
-        // Show the corresponding "Add" button
-        const addButton = buttonElement.previousElementSibling;
-        addButton.classList.remove("hidden")
+          // Show the corresponding "Add" button
+          const addButton = buttonElement.previousElementSibling;
+          addButton.classList.remove("hidden")
 
-        // Decrement the count on the "Checkout" button
-        const checkoutButton = document.getElementById('checkout-button');
-        checkoutButton.textContent = `CHECKOUT (${result.donation_count})`;
-      } else {
-        console.error(result.error);
-      }
-    })
-    .catch(error => console.error('Fetch Error:', error));
+          // Decrement the count on the "Checkout" button
+          const checkoutButton = document.getElementById('checkout-button');
+          checkoutButton.textContent = `CHECKOUT (${result.donation_count})`;
+        } else {
+          console.error(result.error);
+        }
+      })
+      .catch(error => console.error('Fetch Error:', error));
   }
 
   const stripe = Stripe('<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>');
