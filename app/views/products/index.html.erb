@@ -101,7 +101,6 @@
         }
       })
       .catch(error => console.error('Fetch Error:', error));
-    event.stopPropagation();
   }
 
   function removeFromCart(buttonElement, productId) {
@@ -136,7 +135,6 @@
         }
       })
       .catch(error => console.error('Fetch Error:', error));
-    event.stopPropagation();
   }
 
   const stripe = Stripe('<%= ENV['STRIPE_PUBLISHABLE_KEY'] %>');
