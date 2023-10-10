@@ -4,7 +4,7 @@ class DonationsController < ApplicationController
 
   def add_product
     donation = current_donation
-    product_donation = ProductDonation.create(donation_id: donation.id, product_id: params[:product_id])
+    product_donation = ProductDonation.create(donation_id: donation.id, product_id: params[:product_id], final_price: final_price)
 
     if product_donation.save
       render json: { success: true, donation_count: donation.products_donations.count }
@@ -28,7 +28,7 @@ class DonationsController < ApplicationController
     donation = Donation.find_by(id: session[:donation_id])
     return render json: { error: 'Donation not found' }, status: :not_found unless donation
 
-    total_amount = donation.products.sum(:price) * 100
+    total_amount = donation.products_donations.sum(:final_price) * 100
 
     donation.update(amount: total_amount/100)
 
@@ -82,5 +82,10 @@ class DonationsController < ApplicationController
     donation = Donation.find_by(id: session[:donation_id]) || Donation.create
     session[:donation_id] = donation.id
     donation
+  end
+
+  def final_price
+    product = Product.find(params[:product_id])
+    product.name == "Other" ? params[:final_price] : product.price
   end
 end

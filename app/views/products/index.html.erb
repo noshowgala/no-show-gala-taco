@@ -19,13 +19,28 @@
             <%= "NO #{product.name.downcase}" %>
           </div>
           <div class="absolute top-4 right-4 text-black">
-            <span><%= "$#{product.price}" %></span>
+            <% if product.name == "Other" %>
+              <span id="otherDisplayPrice"><%= "$#{product.price}" %></span>
+            <% else %>
+              <span><%= "$#{product.price}" %></span>
+            <% end %>
           </div>
         </div>
       </div>
+      <% if product.name == "Other" %>
+        <%= button_tag "Enter amount", class: "enter-amount-button w-full p-4 rounded-b-lg bg-green-700", onclick: "showOtherField(event)", id: "enterAmountButton" %>
+        <div class="hidden flex bg-white text-black justify-center w-full items-center mb-4" id="otherFinalPriceField">
+          <div class="w-1/2 mx-auto justify-center">
+            <span>$</span><input type="text" id="otherFinalPrice" class="text-black mb-4" style="width: 90%" />
+          </div>
+        </div>
+        <%= button_tag "Add", id: "addOtherProductButton", class: "hidden add-button p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
+        <%= button_tag "Added ✅", id: "removeOtherProductButton", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this, #{product.id})" %>
+      <% else %>
       <div class="w-full">
-        <%= button_tag "Add", class: "add-button w-full p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
-        <%= button_tag "Added ✅", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this, #{product.id})" %>
+          <%= button_tag "Add", class: "add-button w-full p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
+          <%= button_tag "Added ✅", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this, #{product.id})" %>
+        <% end %>
       </div>
     </div>
   <% end %>
@@ -35,8 +50,26 @@
 <%= button_tag "CHECKOUT (0)", id: "checkout-button", class: "w-full bg-green-700 text-white mt-8 mb-16 py-6 text-bold rounded" %>
 
 <script>
+  const otherFinalPrice = document.getElementById("otherFinalPrice");
+
+  otherFinalPrice.addEventListener("keypress", function(event) {
+    const charCode = event.which || event.keyCode;
+    const charStr = String.fromCharCode(charCode);
+
+    if (!/^[0-9]+$/.test(charStr)) {
+      event.preventDefault();
+    }
+  });
+
+  function showOtherField(event){
+    event.target.classList.add("hidden")
+    document.getElementById("addOtherProductButton").classList.remove("hidden")
+    document.getElementById("otherFinalPriceField").classList.remove("hidden")
+  }
+
   function addToCart(buttonElement, productId) {
-    fetch(`/donations/add_product?product_id=${productId}`, {
+    const finalPrice = document.getElementById("otherFinalPrice").value;
+    fetch(`/donations/add_product?product_id=${productId}&final_price=${finalPrice}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -48,6 +81,13 @@
         if (result.success) {
           // Hide the clicked "Add" button
           buttonElement.classList.add("hidden");
+          if(buttonElement.id == "addOtherProductButton"){
+            const otherDisplayPrice = document.getElementById("otherDisplayPrice")
+            otherDisplayPrice.innerHTML = `$${finalPrice}`
+
+            const otherFinalPriceField = document.getElementById("otherFinalPriceField")
+            otherFinalPriceField.classList.add("hidden")
+          }
 
           // Show the corresponding "Added" button
           const addedButton = buttonElement.nextElementSibling;
@@ -77,13 +117,19 @@
           // Hide the clicked "Added" button
           buttonElement.classList.add('hidden');
 
-          // Show the corresponding "Add" button
-          const addButton = buttonElement.previousElementSibling;
-          addButton.classList.remove("hidden")
-
           // Decrement the count on the "Checkout" button
           const checkoutButton = document.getElementById('checkout-button');
           checkoutButton.textContent = `CHECKOUT (${result.donation_count})`;
+
+          if(buttonElement.id == "removeOtherProductButton"){
+            const otherDisplayPrice = document.getElementById("otherDisplayPrice")
+            otherDisplayPrice.innerHTML = ""
+            document.getElementById("enterAmountButton").classList.remove("hidden")
+          } else{
+            // Show the corresponding "Add" button
+            const addButton = buttonElement.previousElementSibling;
+            addButton.classList.remove("hidden")
+          }
         } else {
           console.error(result.error);
         }
