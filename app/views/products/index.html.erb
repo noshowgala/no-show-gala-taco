@@ -20,7 +20,7 @@
           </div>
           <div class="absolute top-4 right-4 text-black">
             <% if product.name == "Other" %>
-              <span id="otherDisplayPrice"><%= "$#{product.price}" %></span>
+              <span id="other-display-price"><%= "$#{product.price}" %></span>
             <% else %>
               <span><%= "$#{product.price}" %></span>
             <% end %>
@@ -28,14 +28,14 @@
         </div>
       </div>
       <% if product.name == "Other" %>
-        <%= button_tag "Enter amount", class: "enter-amount-button w-full p-4 rounded-b-lg bg-green-700", onclick: "showOtherField(event)", id: "enterAmountButton" %>
-        <div class="hidden flex bg-white text-black justify-center w-full items-center mb-4" id="otherFinalPriceField">
+        <%= button_tag "Enter amount", class: "enter-amount-button w-full p-4 rounded-b-lg bg-green-700", onclick: "showOtherField(event)", id: "enter-amount-button" %>
+        <div class="hidden flex bg-white text-black justify-center w-full items-center mb-4" id="other-final-price-field">
           <div class="w-1/2 mx-auto justify-center">
-            <span>$</span><input type="text" id="otherFinalPrice" class="text-black mb-4" style="width: 90%" />
+            <span>$</span><input type="text" id="other-final-price" class="text-black mb-4" style="width: 90%" />
           </div>
         </div>
-        <%= button_tag "Add", id: "addOtherProductButton", class: "hidden add-button p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
-        <%= button_tag "Added ✅", id: "removeOtherProductButton", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this, #{product.id})" %>
+        <%= button_tag "Add", id: "add-other-product-button", class: "hidden add-button p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
+        <%= button_tag "Added ✅", id: "remove-other-product-button", class: "added-button hidden w-full p-4 rounded-b-lg bg-green-900", onclick: "removeFromCart(this, #{product.id})" %>
       <% else %>
       <div class="w-full">
           <%= button_tag "Add", class: "add-button w-full p-4 rounded-b-lg bg-green-700", onclick: "addToCart(this, #{product.id})" %>
@@ -50,7 +50,7 @@
 <%= button_tag "CHECKOUT (0)", id: "checkout-button", class: "w-full bg-green-700 text-white mt-8 mb-16 py-6 text-bold rounded" %>
 
 <script>
-  const otherFinalPrice = document.getElementById("otherFinalPrice");
+  const otherFinalPrice = document.getElementById("other-final-price");
 
   otherFinalPrice.addEventListener("keypress", function(event) {
     const charCode = event.which || event.keyCode;
@@ -63,12 +63,12 @@
 
   function showOtherField(event){
     event.target.classList.add("hidden")
-    document.getElementById("addOtherProductButton").classList.remove("hidden")
-    document.getElementById("otherFinalPriceField").classList.remove("hidden")
+    document.getElementById("add-other-product-button").classList.remove("hidden")
+    document.getElementById("other-final-price-field").classList.remove("hidden")
   }
 
   function addToCart(buttonElement, productId) {
-    const finalPrice = document.getElementById("otherFinalPrice").value;
+    const finalPrice = document.getElementById("other-final-price").value;
     fetch(`/donations/add_product?product_id=${productId}&final_price=${finalPrice}`, {
       method: 'POST',
       headers: {
@@ -81,11 +81,11 @@
         if (result.success) {
           // Hide the clicked "Add" button
           buttonElement.classList.add("hidden");
-          if(buttonElement.id == "addOtherProductButton"){
-            const otherDisplayPrice = document.getElementById("otherDisplayPrice")
+          if(buttonElement.id == "add-other-product-button"){
+            const otherDisplayPrice = document.getElementById("other-display-price")
             otherDisplayPrice.innerHTML = `$${finalPrice}`
 
-            const otherFinalPriceField = document.getElementById("otherFinalPriceField")
+            const otherFinalPriceField = document.getElementById("other-final-price-field")
             otherFinalPriceField.classList.add("hidden")
           }
 
@@ -121,10 +121,10 @@
           const checkoutButton = document.getElementById('checkout-button');
           checkoutButton.textContent = `CHECKOUT (${result.donation_count})`;
 
-          if(buttonElement.id == "removeOtherProductButton"){
-            const otherDisplayPrice = document.getElementById("otherDisplayPrice")
+          if(buttonElement.id == "remove-other-product-button"){
+            const otherDisplayPrice = document.getElementById("other-display-price")
             otherDisplayPrice.innerHTML = ""
-            document.getElementById("enterAmountButton").classList.remove("hidden")
+            document.getElementById("enter-amount-button").classList.remove("hidden")
           } else{
             // Show the corresponding "Add" button
             const addButton = buttonElement.previousElementSibling;
