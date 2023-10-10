@@ -14,4 +14,5 @@ Product.create([{ name: "Cocktail", price: 25 },
                 { name: "Silent Auction", price: 200 },
                 { name: "Live Auction", price: 500 },
                 { name: "Event Sponsorship", price: 2500 },
+                { name: "Other", price: nil },
 ])
