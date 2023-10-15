@@ -25,9 +25,11 @@
 <div class="mt-8 w-fit text-center inline">
   <h2 class="mt-14 text-4xl font-cursive">Guest list</h2>
   <p class="mt-2 text-lg font-light">See who else won't be there.</p>
-  <div class="guest-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-12 mb-24 font-light">
-    <% ["Saron Yitbarek", "Nadia Odunayo", "Tom Kelly", "Rachel Maddox"].each do |name| %>
-      <p class="text-xl"><%= name.strip %></p>
+  <div id="name-input-area">
+    <%= link_to products_path, class: 'text-black' do %>
+      <button id="add-name-button" class="mt-4 bg-green-200 text-black font-bold py-1 px-8 rounded">Add my name</button>
     <% end %>
   </div>
+
+  <%= render partial: "guests/guest_list" %>
 </div>

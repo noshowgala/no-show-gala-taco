@@ -73,6 +73,8 @@ class DonationsController < ApplicationController
       donation = Donation.find_by(id: session.metadata['donation_id'])
       donation.update(stripe_transaction_id: stripe_transaction.id)
     end
+
+    @guests = GuestListEntry.order(created_at: :desc)
   end
 
 
