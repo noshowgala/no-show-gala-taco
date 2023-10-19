@@ -1,0 +1,5 @@
+<div id="guest-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-12 mb-24 font-light">
+  <% @guests.each do |guest| %>
+    <p class="text-lg"><%= guest.name.strip %></p>
+  <% end %>
+</div>

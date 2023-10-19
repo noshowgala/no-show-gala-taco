@@ -11,6 +11,23 @@
   <%= button_tag "Copy R.S.V.P. Link", class: "font-bold p-4 rounded-lg bg-green-700", onclick: "copyLinkToClipboard()" %>
 </div>
 
+<hr class="my-8 border-t border-gray-900">
+
+<div class="mt-8 w-fit text-center inline">
+  <h2 class="mt-14 text-4xl font-cursive">Guest list</h2>
+  <p class="mt-2 text-lg font-light">See who else won't be there.</p>
+  <div id="name-input-area">
+    <button id="add-name-button" class="mt-4 bg-green-200 text-black font-bold py-1 px-8 rounded">Add my name</button>
+
+    <form id="name-form" class="hidden" action="/guests" method="post" data-turbo="true">
+      <input type="text" name="guest[name]" id="donor-name" class="border rounded py-2 px-4 mt-4 text-black" placeholder="Enter your name">
+      <button type="submit" id="add-name-button" class="bg-green-200 text-black font-semibold p-2 rounded">Add</button>
+    </form>
+  </div>
+
+  <%= render partial: "guests/guest_list" %>
+</div>
+
 <script>
   function copyLinkToClipboard() {
     const link = "https://noshowgala.org";
@@ -21,4 +38,17 @@
       console.error('Could not copy text: ', error);
     })
   }
+
+  document.getElementById('add-name-button').addEventListener('click', function() {
+    document.getElementById('add-name-button').classList.add('hidden');
+    document.getElementById('name-form').classList.remove('hidden');
+  });
+
+  document.getElementById('add-name-button').addEventListener('click', function() {
+    var donorName = document.getElementById('donor-name').value;
+    if (donorName) {
+      document.getElementById('name-input-area').classList.remove('hidden');
+      document.getElementById('name-form').classList.add('hidden');
+    }
+  });
 </script>

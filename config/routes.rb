@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root "pages#home"
 
   resources :products, only: [:index]
+  resources :guests, only: [:create]
 
   post 'donations/add_product', to: 'donations#add_product', as: :add_product
   post 'donations/remove_product', to: 'donations#remove_product', as: :remove_product

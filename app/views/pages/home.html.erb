@@ -19,3 +19,17 @@
   <% end %>
   <p class="mb-16 pl-4 flex mt-4 self-center text-3xl font-light">by Oct 27, 2023</p>
 </div>
+
+<hr class="my-8 border-t border-gray-900">
+
+<div class="mt-8 w-fit text-center inline">
+  <h2 class="mt-14 text-4xl font-cursive">Guest list</h2>
+  <p class="mt-2 text-lg font-light">See who else won't be there.</p>
+  <div id="name-input-area">
+    <%= link_to products_path, class: 'text-black' do %>
+      <button id="add-name-button" class="mt-4 bg-green-200 text-black font-bold py-1 px-8 rounded">Add my name</button>
+    <% end %>
+  </div>
+
+  <%= render partial: "guests/guest_list" %>
+</div>
