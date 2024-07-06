@@ -18,6 +18,7 @@ services:
     depends_on:
       - redis
       - postgres
+    working_dir: /app
 
   app:
     <<: *base
